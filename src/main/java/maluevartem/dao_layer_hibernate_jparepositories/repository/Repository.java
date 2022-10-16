@@ -5,6 +5,7 @@ import maluevartem.dao_layer_hibernate_jparepositories.jpaRepository.PersonCrudR
 import maluevartem.dao_layer_hibernate_jparepositories.model.PersonConfirmation;
 import maluevartem.dao_layer_hibernate_jparepositories.model.Persons;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.data.domain.Sort;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -17,15 +18,15 @@ public class Repository implements CommandLineRunner {
     private final PersonCrudRepository personRepository;
 
     public List<Persons> getPersonsByCity(String city) {
-        return personRepository.findByCityOfLiving(city);
+        return personRepository.selectEntityByCity(city);
     }
 
     public List<Persons> getPersonsByAge(int age) {
-        return personRepository.findByPersonConfirmationAgeLessThanOrderByPersonConfirmationAgeAsc(age);
+        return personRepository.selectEntityByAge(age, Sort.by("personConfirmation.age"));
     }
 
     public Optional<Persons> getPersonsByNameAndSurname(String name, String surname) {
-        return personRepository.findByPersonConfirmationNameAndPersonConfirmationSurname(name, surname);
+        return personRepository.selectEntityByNameAndSurname(name, surname);
     }
 
     @Override
